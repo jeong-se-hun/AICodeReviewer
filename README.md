@@ -79,6 +79,7 @@ AI 모델을 변경하려면, `.github/workflows/ai-code-review.yml` 파일의 `
 > ℹ️ 더 많은 모델을 추가될 예정입니다! 원하는 AI 모델이 있다면 기여 또는 이슈를 등록해 주세요!
 
 - **gemini**
+- **mistral**
 
 ### 리뷰 예시
 
