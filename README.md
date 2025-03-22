@@ -82,5 +82,7 @@ AI 모델을 변경하려면, `.github/workflows/ai-code-review.yml` 파일의 `
 - **mistral**
 
 ### 리뷰 예시
- 
-  ![AI Code Review 예시 이미지](./docs/images/ai-code-review-example.png)
+
+![AI Code Review 예시 이미지](./docs/images/ai-code-review-example.png)
+
+**테스트**
