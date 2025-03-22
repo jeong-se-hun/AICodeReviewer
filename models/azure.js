@@ -3,8 +3,8 @@ import { AI_API_KEY, AI_MODEL } from "../utils/env.js";
 import { getPrompt } from "../utils/prompt.js";
 
 const client = new OpenAI({
-  base_url: "https://models.inference.ai.azure.com",
-  api_key: AI_API_KEY,
+  baseURL: "https://models.inference.ai.azure.com",
+  apiKey: AI_API_KEY,
 });
 
 // azure API 호출
@@ -12,7 +12,6 @@ export async function getAzureReview(diff) {
   const prompt = getPrompt(diff);
 
   const chatResponse = await client.chat.complete({
-    model: AI_MODEL,
     messages: [
       {
         role: "system",
@@ -20,6 +19,7 @@ export async function getAzureReview(diff) {
       },
       { role: "user", content: prompt },
     ],
+    model: AI_MODEL,
   });
 
   return chatResponse.choices[0].message.content;
