@@ -2,11 +2,13 @@ import { getPRDiff, postComment } from "./utils/githubApi.js";
 import { getGeminiReview } from "./models/gemini.js";
 import { getMistralReview } from "./models/mistral.js";
 import { AI_MODEL_PROVIDER } from "./utils/env.js";
+import { getAzureReview } from "./models/azure.js";
 
 // 모델 제공처에 따른 리뷰 함수 매핑
 const reviewFunctionsMap = {
   gemini: getGeminiReview,
   mistral: getMistralReview,
+  azure: getAzureReview,
 };
 
 const reviewFunction = reviewFunctionsMap[AI_MODEL_PROVIDER] || null;
