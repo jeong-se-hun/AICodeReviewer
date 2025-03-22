@@ -1,0 +1,26 @@
+name: "AI Code Reviewer"
+description: "Automatically reviews pull requests using AI"
+
+branding:
+  icon: "triangle"
+  color: "gray-dark"
+
+inputs:
+  GITHUB_TOKEN:
+    description: "GitHub token with permissions to read PRs and write comments"
+    required: true
+  GITHUB_PR_NUMBER:
+    description: "Pull request number to review"
+    required: true
+  GITHUB_REPOSITORY:
+    description: "Repository name in the form owner/repo"
+    required: true
+  AI_API_KEY:
+    description: "API key for the AI service"
+    required: true
+  AI_MODEL:
+    description: "The AI model to use for review"
+    required: true
+  AI_MODEL_PROVIDER:
+    description: "The provider of the AI model (e.g., gemini, mistral, azure)"
+    required: true
