@@ -30,6 +30,7 @@ on:
 
 permissions:
   pull-requests: write
+  #contents: read # private repository일 경우 필요
 
 jobs:
   review:
