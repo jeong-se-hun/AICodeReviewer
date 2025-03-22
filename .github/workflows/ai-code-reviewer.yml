@@ -1,0 +1,41 @@
+name: AI Code Reviewer
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+
+permissions:
+  pull-requests: write
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Current Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Checkout AI Code Review
+        uses: actions/checkout@v3
+        with:
+          repository: jeong-se-hun/AICodeReviewer
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run AI Review Script
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_PR_NUMBER: ${{ github.event.pull_request.number }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          AI_API_KEY: ${{ secrets.AI_API_KEY }}
+          AI_MODEL: "gemini-2.0-pro-exp-02-05"
+        run: node index.js
