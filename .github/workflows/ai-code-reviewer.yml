@@ -38,4 +38,5 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
           AI_API_KEY: ${{ secrets.AI_API_KEY }}
           AI_MODEL: "gemini-2.0-pro-exp-02-05"
+          AI_MODEL_PROVIDER: "gemini"
         run: node index.js

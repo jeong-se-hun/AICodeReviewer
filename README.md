@@ -58,6 +58,7 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
           AI_API_KEY: ${{ secrets.AI_API_KEY }}
           AI_MODEL: "사용하실 모델명을 입력해주세요" # 예: "gemini-2.0-pro-exp-02-05"
+          AI_MODEL_PROVIDER: "" # 선택 가능 옵션: gemini | mistral
         run: node index.js
 ```
 
