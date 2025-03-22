@@ -3,7 +3,7 @@ name: AI Code Reviewer
 on:
   pull_request:
     branches:
-      - main
+      - develop
     types:
       - opened
       - synchronize
@@ -37,6 +37,6 @@ jobs:
           GITHUB_PR_NUMBER: ${{ github.event.pull_request.number }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           AI_API_KEY: ${{ secrets.AI_API_KEY }}
-          AI_MODEL: "mistral-small-latest"
-          AI_MODEL_PROVIDER: "mistral"
+          AI_MODEL: "gpt-4o-mini"
+          AI_MODEL_PROVIDER: "azure"
         run: node index.js
