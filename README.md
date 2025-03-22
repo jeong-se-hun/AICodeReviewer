@@ -23,7 +23,7 @@ name: AI Code Reviewer
 on:
   pull_request:
     branches:
-      - main
+      - main # 리뷰를 원하는 브랜치로 변경하세요
     types:
       - opened
       - synchronize
