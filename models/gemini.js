@@ -1,5 +1,5 @@
 import { GoogleGenAI } from "@google/genai";
-import { AI_API_KEY, AI_MODEL } from "../utils/env";
+import { AI_API_KEY, AI_MODEL } from "../utils/env.js";
 
 const ai = new GoogleGenAI({
   apiKey: AI_API_KEY,
