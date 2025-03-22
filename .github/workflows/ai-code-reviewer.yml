@@ -3,7 +3,7 @@ name: AI Code Reviewer
 on:
   pull_request:
     branches:
-      - develop
+      - main
     types:
       - opened
       - synchronize
@@ -21,7 +21,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: "18"
 
       - name: Checkout AI Code Review
         uses: actions/checkout@v3
