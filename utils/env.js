@@ -6,3 +6,4 @@ export const GITHUB_REPOSITORY = process.env.GITHUB_REPOSITORY;
 
 export const AI_API_KEY = process.env.AI_API_KEY;
 export const AI_MODEL = process.env.AI_MODEL;
+export const AI_MODEL_PROVIDER = process.env.AI_MODEL_PROVIDER;
