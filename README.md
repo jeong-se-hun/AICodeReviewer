@@ -58,6 +58,7 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
           AI_API_KEY: ${{ secrets.AI_API_KEY }}
           AI_MODEL: "사용하실 모델명을 입력해주세요" # 예: "gemini-2.0-pro-exp-02-05"
+          AI_MODEL_PROVIDER: "" # 선택 가능 옵션: gemini | mistral
         run: node index.js
 ```
 
@@ -78,13 +79,8 @@ AI 모델을 변경하려면, `.github/workflows/ai-code-review.yml` 파일의 `
 > ℹ️ 더 많은 모델을 추가될 예정입니다! 원하는 AI 모델이 있다면 기여 또는 이슈를 등록해 주세요!
 
 - **gemini**
+- **mistral**
 
 ### 리뷰 예시
-
-- 실제 리뷰 예시는 다음 링크에서 확인할 수 있습니다  
-  [AICodeReviewer PR #7](https://github.com/jeong-se-hun/AICodeReviewer/pull/7)
-
-  <br/>
-
-- 아래는 AI 코드 리뷰의 예시 이미지입니다  
+ 
   ![AI Code Review 예시 이미지](./docs/images/ai-code-review-example.png)
