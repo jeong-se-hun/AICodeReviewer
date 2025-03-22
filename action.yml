@@ -1,4 +1,4 @@
-name: "AICodeReviewer"
+name: "AICodeReviewerBot"
 description: "Automatically reviews pull requests using AI"
 
 branding:
