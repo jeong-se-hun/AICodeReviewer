@@ -58,7 +58,7 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
           AI_API_KEY: ${{ secrets.AI_API_KEY }}
           AI_MODEL: "사용하실 모델명을 입력해주세요" # 예: "gemini-2.0-pro-exp-02-05"
-          AI_MODEL_PROVIDER: "" # 선택 가능 옵션: gemini | mistral
+          AI_MODEL_PROVIDER: "" # 선택 가능 옵션: gemini | mistral | azure
         run: node index.js
 ```
 
@@ -74,13 +74,14 @@ AI 모델을 변경하려면, `.github/workflows/ai-code-review.yml` 파일의 `
 
 예시: AI_MODEL: "gemini-2.0-pro-exp-02-05"
 
-### 사용 가능 AI 모델
+### 사용 가능 AI 서비스 제공업체
 
 > ℹ️ 더 많은 모델을 추가될 예정입니다! 원하는 AI 모델이 있다면 기여 또는 이슈를 등록해 주세요!
 
 - **gemini**
 - **mistral**
+- **azure**
 
 ### 리뷰 예시
- 
-  ![AI Code Review 예시 이미지](./docs/images/ai-code-review-example.png)
+
+![AI Code Review 예시 이미지](./docs/images/ai-code-review-example.png)
