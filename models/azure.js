@@ -11,7 +11,7 @@ const client = new OpenAI({
 export async function getAzureReview(diff) {
   const prompt = getPrompt(diff);
 
-  const chatResponse = await client.chat.complete({
+  const chatResponse = await client.chat.completions.create({
     messages: [
       {
         role: "system",
