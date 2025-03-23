@@ -59,7 +59,8 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
           AI_API_KEY: ${{ secrets.AI_API_KEY }}
           AI_MODEL: "사용하실 모델명을 입력해주세요" # 예: "gemini-2.0-pro-exp-02-05"
-          AI_MODEL_PROVIDER: "" # 선택 가능 옵션: gemini | mistral | azure
+          AI_MODEL_PROVIDER: "모델 제공 업체를 입력해주세요" # 선택 가능 옵션: gemini | mistral | azure
+          REVIEW_FEEDBACK_LANGUAGE: "한국어" # 리뷰 피드백 언어 설정
         run: node index.js
 ```
 
@@ -73,15 +74,42 @@ jobs:
 
 AI 모델을 변경하려면, `.github/workflows/ai-code-review.yml` 파일의 `AI_MODEL` 값을 원하는 모델로 변경합니다.
 
-예시: AI_MODEL: "gemini-2.0-pro-exp-02-05"
+- **예시**:
+  ```yaml
+  AI_MODEL: "gemini-2.0-pro-exp-02-05"
+  ```
 
-### 사용 가능 AI 서비스 제공업체
+### 4. AI_MODEL_PROVIDER 설정
 
-> ℹ️ 더 많은 모델을 추가될 예정입니다! 원하는 AI 모델이 있다면 기여 또는 이슈를 등록해 주세요!
+AI 모델의 제공 업체를 변경하려면, `.github/workflows/ai-code-review.yml` 파일의 `AI_MODEL_PROVIDER` 값을 변경합니다.
+
+#### 사용 가능한 AI 서비스 제공 업체
 
 - **gemini**
 - **mistral**
 - **azure**
+
+> ℹ️ 더 많은 모델을 추가될 예정입니다! 원하는 AI 모델이 있다면 기여 또는 이슈를 등록해 주세요!
+
+### 5. REVIEW_FEEDBACK_LANGUAGE 설정
+
+AI가 리뷰 피드백을 제공할 언어를 지정합니다.
+프롬프트 요청 시 사용됩니다.
+
+```js
+`Please provide feedback in ${REVIEW_FEEDBACK_LANGUAGE || "Korean"}`;
+```
+
+리뷰 피드백 언어를 변경하려면, `.github/workflows/ai-code-review.yml` 파일의 `REVIEW_FEEDBACK_LANGUAGE` 값을 원하는 언어로 변경합니다.
+
+- **형식**: 언어 이름(예: "Korean", "English", "한국어", "영어")을 입력하세요. 대소문자 구분 없이 동작합니다.
+- **기본값**: 설정하지 않으면 "Korean"(한국어)로 제공됩니다.
+- **예시**:
+  ```yaml
+  REVIEW_FEEDBACK_LANGUAGE: "English" # 영어로 피드백 받기
+  ```
+
+<br/>
 
 ### 리뷰 예시
 
