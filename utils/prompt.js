@@ -30,7 +30,7 @@ You are an expert code reviewer. Review the PR diff and provide **concise, clear
 * **Problematic:** "calculateTotal: unnecessary loop. Use reduce for simplification & performance."
 * **No Issues:** "✅ Code Review Passed: No critical issues detected."
 
-**No Feedback:** ➡️ "✅ Code Review Passed: No critical issues detected."
+**No Feedback:**  "✅ Code Review Passed: No critical issues detected."
 
 **【Output Format】**
 - Language: ${REVIEW_FEEDBACK_LANGUAGE || "Korean"}
@@ -40,6 +40,12 @@ You are an expert code reviewer. Review the PR diff and provide **concise, clear
 
 Please provide feedback in ${REVIEW_FEEDBACK_LANGUAGE || "Korean"}.
 `;
+
+console.log(
+  "@@@@@@@@@@@@@@@@@@@@@",
+  REVIEW_FEEDBACK_LANGUAGE,
+  "$$$$$$$$$$$$$$$$$"
+);
 
 export function getPrompt(diff) {
   if (!diff || typeof diff !== "string") {
