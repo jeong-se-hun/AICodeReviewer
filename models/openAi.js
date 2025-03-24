@@ -10,12 +10,16 @@ const client = new OpenAI({
 export async function getOpenAiReview(diff) {
   const prompt = getPrompt(diff);
 
-  const chatResponse = await client.responses.create({
+  const chatResponse = await client.chat.completions.create({
+    messages: [
+      {
+        role: "system",
+        content: "",
+      },
+      { role: "user", content: prompt },
+    ],
     model: AI_MODEL,
-    input: prompt,
   });
 
-  console.log(chatResponse); // TODO: remove this line after testing is done
-
-  return chatResponse.output_text;
+  return chatResponse.choices[0].message.content;
 }
