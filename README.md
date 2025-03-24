@@ -1,21 +1,23 @@
+[Korean](./docs/readmes/README_KO.md)
+
 # AICodeReviewer
 
-AICodeReviewer는 AI를 활용한 코드 리뷰 자동화 도구입니다.  
-개발자들이 코드를 더 효율적으로 검토하고 품질을 높일 수 있도록,
-GitHub Actions를 통해 코드 리뷰 프로세스를 자동화합니다.
+AICodeReviewer is an automated code review tool powered by AI.
+It enables developers to review code more efficiently and improve its quality by automating the code review process through GitHub Actions.
 
-## 주요 기능
+## Key Features
 
-- AI 기반 PR 분석 및 개선 제안
-- GitHub Pull Request에 자동 리뷰 댓글 생성
+- AI-based PR analysis and improvement suggestions
 
-## 사용 방법
+- Automatically generates review comments on GitHub Pull Requests
 
-AICodeReviewer는 GitHub Actions를 활용하여 동작합니다. 아래 단계를 따라 워크플로우를 설정해 주세요
+## How to Use
 
-### 1. 워크플로우 파일 추가
+AICodeReviewer operates using GitHub Actions. Follow the steps below to set up the workflow.
 
-프로젝트 루트 디렉토리에 `/.github/workflows/ai-code-reviewer.yml` 파일을 추가합니다.
+### 1. Add a Workflow File
+
+Add a file named /.github/workflows/ai-code-reviewer.yml to the root directory of your project.
 
 ```yaml
 name: AI Code Reviewer
@@ -23,14 +25,14 @@ name: AI Code Reviewer
 on:
   pull_request:
     branches:
-      - main # 리뷰를 원하는 브랜치로 변경하세요
+      - main # Change this to the branch you want to review
     types:
       - opened
       - synchronize
 
 permissions:
   pull-requests: write
-  #contents: read # private repository일 경우 필요
+  #contents: read # Required for private repositories
 
 jobs:
   review:
@@ -58,60 +60,63 @@ jobs:
           GITHUB_PR_NUMBER: ${{ github.event.pull_request.number }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           AI_API_KEY: ${{ secrets.AI_API_KEY }}
-          AI_MODEL: "사용하실 모델명을 입력해주세요" # 예: "gemini-2.0-pro-exp-02-05"
-          AI_MODEL_PROVIDER: "모델 제공 업체를 입력해주세요" # README에서 사용 가능한 AI 서비스 제공 업체를 확인해 주세요
-          REVIEW_FEEDBACK_LANGUAGE: "한국어" # 리뷰 피드백 언어 설정
+          AI_MODEL: "Enter the model name you wish to use" # Example: "gemini-2.0-pro-exp-02-05"
+          AI_MODEL_PROVIDER: "Enter the model provider" # Check the README for available AI service providers
+          REVIEW_FEEDBACK_LANGUAGE: "English" # Set the language for review feedback
         run: node index.js
 ```
 
-### 2. AI_API_KEY 설정
+### 2. Set Up AI_API_KEY
 
-1. GitHub 저장소의 Settings > Secrets and variables > Actions로 이동합니다.
-2. Secrets 탭에서 New repository secret 버튼을 클릭합니다.
-3. 이름은 AI_API_KEY로 설정하고, 사용하려는 AI 모델의 API 키를 값으로 입력합니다.
+1. Go to your repository's Settings > Secrets and variables > Actions.
 
-### 3. AI_MODEL 설정
+2. In the Secrets tab, click the New repository secret button.
 
-AI 모델을 변경하려면, `.github/workflows/ai-code-review.yml` 파일의 `AI_MODEL` 값을 원하는 모델로 변경합니다.
+3. Name the secret as AI_API_KEY and input your AI model's API key as the value.
 
-- **예시**:
-  ```yaml
-  AI_MODEL: "gemini-2.0-pro-exp-02-05"
-  ```
+### 3. Configure AI_MODEL
 
-### 4. AI_MODEL_PROVIDER 설정
+To change the AI model, modify the `AI_MODEL` value in the `/.github/workflows/ai-code-review.yml` file.
 
-AI 모델의 제공 업체를 변경하려면, `.github/workflows/ai-code-review.yml` 파일의 `AI_MODEL_PROVIDER` 값을 변경합니다.
+- **Example**:
 
-#### 사용 가능한 AI 서비스 제공 업체
+```yaml
+AI_MODEL: "gemini-2.0-pro-exp-02-05"
+```
+
+### 4. Configure AI_MODEL_PROVIDER
+
+To change the AI model provider, modify the `AI_MODEL_PROVIDER` value in the `/.github/workflows/ai-code-review.yml` file.
+
+#### Available AI Service Providers
 
 - **gemini**
 - **mistral**
 - **azure**
 - **openai**
 
-> ℹ️ 더 많은 모델을 추가될 예정입니다! 원하는 AI 모델이 있다면 기여 또는 이슈를 등록해 주세요!
+> ℹ️ More models will be added soon! If you have a desired AI model, please contribute or create an issue!
 
-### 5. REVIEW_FEEDBACK_LANGUAGE 설정
+### 5. Set REVIEW_FEEDBACK_LANGUAGE
 
-AI가 리뷰 피드백을 제공할 언어를 지정합니다.
-프롬프트 요청 시 사용됩니다.
+Specify the language in which the AI should provide review feedback.
+This is used when prompting.
 
 ```js
 `Please provide feedback in ${REVIEW_FEEDBACK_LANGUAGE || "Korean"}`;
 ```
 
-리뷰 피드백 언어를 변경하려면, `.github/workflows/ai-code-review.yml` 파일의 `REVIEW_FEEDBACK_LANGUAGE` 값을 원하는 언어로 변경합니다.
+To change the review feedback language, modify the `REVIEW_FEEDBACK_LANGUAGE` value in the `/.github/workflows/ai-code-review.yml` file.
 
-- **형식**: 언어 이름(예: "Korean", "English", "한국어", "영어")을 입력하세요. 대소문자 구분 없이 동작합니다.
-- **기본값**: 설정하지 않으면 "Korean"(한국어)로 제공됩니다.
-- **예시**:
+- **Format**: Enter the language name (e.g., "Korean", "English", "한국어", "영어"). The case is ignored.
+- **Default**: If not set, it defaults to "Korean".
+- **Example**:
   ```yaml
-  REVIEW_FEEDBACK_LANGUAGE: "English" # 영어로 피드백 받기
+  REVIEW_FEEDBACK_LANGUAGE: "English" # Receive feedback in English
   ```
 
 <br/>
 
-### 리뷰 예시
+### Review Example
 
-![AI Code Review 예시 이미지](./docs/images/ai-code-review-example.png)
+![AI Code Review Example](./docs/images/ai-code-review-example.png)
