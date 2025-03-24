@@ -20,6 +20,6 @@ export async function getOpenAiReview(diff) {
     ],
     model: AI_MODEL,
   });
-  console.log(chatResponse);
-  return chatResponse.choices[0].message.content;
+
+  return chatResponse.output_text;
 }
