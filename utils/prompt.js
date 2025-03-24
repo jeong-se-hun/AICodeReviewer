@@ -39,9 +39,9 @@ You are an expert code reviewer. Review the PR diff and provide **concise, clear
 - Length: Max 300 chars/item
 - Prohibited: "Maybe"/"Perhaps", subjective opinions, advice w/o code examples
 
-Please provide all feedback and answers in ${
+**All feedback and responses must be strictly provided exclusively in ${
   REVIEW_FEEDBACK_LANGUAGE || "Korean"
-}.
+}. No other language is allowed.**
 `;
 
 export function getPrompt(diff) {
