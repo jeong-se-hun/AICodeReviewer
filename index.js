@@ -5,6 +5,7 @@ import {
   getGeminiReview,
   getMistralReview,
   getAzureReview,
+  getOpenAiReview,
 } from "./models/index.js";
 
 // 모델 제공처에 따른 리뷰 함수 매핑
@@ -12,6 +13,7 @@ const reviewFunctionsMap = {
   gemini: getGeminiReview,
   mistral: getMistralReview,
   azure: getAzureReview,
+  openai: getOpenAiReview,
 };
 
 const reviewFunction = reviewFunctionsMap[AI_MODEL_PROVIDER] || null;
