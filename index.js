@@ -1,4 +1,4 @@
-import { getPRDiff, postComment } from "./utils/githubApi.js";
+import { getCommits, getPRDiff, postComment } from "./utils/githubApi.js";
 import { AI_MODEL_PROVIDER } from "./utils/env.js";
 
 import {
@@ -22,6 +22,8 @@ async function runReview() {
   try {
     // PR diff 가져오기
     const diff = await getPRDiff();
+    const commit = await getCommits();
+    console.log("commit.text", commit, "@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
     // 리뷰 함수 유효성 체크
     if (!reviewFunction) {
