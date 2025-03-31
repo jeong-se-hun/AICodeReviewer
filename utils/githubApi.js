@@ -22,7 +22,20 @@ export async function getPRDiff() {
   const response = await fetchGitHubApi(diffUrl, {
     accept: "application/vnd.github.v3.diff",
   });
-  return response.text();
+
+  const commits = await response.json();
+
+  // 커밋 정보 확인
+  console.log("commits", commits, "@@@@@@@@@@@@@@@@@@@@@@@@@@");
+
+  // 커밋명과 내용 추출
+  const commitDetails = commits.map((commit) => ({
+    sha: commit.sha, // 커밋 해시
+    title: commit.commit.message.split("\n")[0], // 커밋 메시지의 첫 줄 (제목)
+    body: commit.commit.message.split("\n").slice(1).join("\n").trim(), // 나머지 (내용)
+  }));
+
+  return commitDetails;
 }
 
 //  커밋 정보가져오기

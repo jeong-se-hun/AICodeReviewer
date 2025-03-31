@@ -23,7 +23,7 @@ async function runReview() {
     // PR diff 가져오기
     const diff = await getPRDiff();
     const commit = await getCommits();
-    console.log("commit.text", commit, "@@@@@@@@@@@@@@@@@@@@@@@@@@");
+    console.log("commitDetails", commit, "@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
     // 리뷰 함수 유효성 체크
     if (!reviewFunction) {
