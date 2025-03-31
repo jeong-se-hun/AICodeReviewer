@@ -8,8 +8,8 @@ const client = new OpenAI({
 });
 
 // azure API 호출
-export async function getAzureReview(diff) {
-  const prompt = getPrompt(diff);
+export async function getAzureReview(reviewData) {
+  const prompt = getPrompt(reviewData);
 
   const chatResponse = await client.chat.completions.create({
     messages: [

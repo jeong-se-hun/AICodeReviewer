@@ -7,8 +7,8 @@ const client = new OpenAI({
 });
 
 // openAi API 호출
-export async function getOpenAiReview(diff) {
-  const prompt = getPrompt(diff);
+export async function getOpenAiReview(reviewData) {
+  const prompt = getPrompt(reviewData);
 
   const chatResponse = await client.chat.completions.create({
     messages: [
