@@ -23,6 +23,15 @@ export async function getPRDiff() {
     accept: "application/vnd.github.v3.diff",
   });
 
+  return response.text();
+}
+
+//  커밋 정보가져오기
+export async function getCommits() {
+  const commitsUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${GITHUB_PR_NUMBER}/commits`;
+  const response = await fetchGitHubApi(commitsUrl);
+
+  // JSON으로 파싱
   const commits = await response.json();
 
   // 커밋 정보 확인
@@ -36,14 +45,6 @@ export async function getPRDiff() {
   }));
 
   return commitDetails;
-}
-
-//  커밋 정보가져오기
-export async function getCommits() {
-  const commitsUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${GITHUB_PR_NUMBER}/commits`;
-  const response = await fetchGitHubApi(commitsUrl);
-  console.log("commits", response, "@@@@@@@@@@@@@@@@@@@@@@@@@@");
-  return response.text();
 }
 
 // GitHub PR에 댓글 작성
