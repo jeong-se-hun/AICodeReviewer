@@ -33,7 +33,8 @@ export async function getCommitDetails() {
 
   // JSON으로 파싱
   const commits = await response.json();
-
+  // TODO 삭제 예정 로그
+  console.log("commits", commits);
   // 커밋명과 내용 추출
   const commitDetails = commits.map((commit) => ({
     title: commit.commit.message.split("\n")[0], // 커밋 메시지의 첫 줄 (제목)
@@ -41,6 +42,14 @@ export async function getCommitDetails() {
   }));
 
   return commitDetails;
+}
+
+// TODO 삭제 예정 test 요청
+export async function testGitHubApi() {
+  const testUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${GITHUB_PR_NUMBER}`;
+  const response = await fetchGitHubApi(testUrl);
+  console.log(response.json());
+  return response.text();
 }
 
 // GitHub PR에 댓글 작성
