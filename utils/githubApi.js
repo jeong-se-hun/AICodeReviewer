@@ -49,7 +49,7 @@ export async function testGitHubApi() {
   const testUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${GITHUB_PR_NUMBER}`;
   const response = await fetchGitHubApi(testUrl);
   console.log(response.json());
-  return response.text();
+  return;
 }
 
 // GitHub PR에 댓글 작성
