@@ -1,9 +1,4 @@
-import {
-  getCommitDetails,
-  getPRDiff,
-  postComment,
-  testGitHubApi,
-} from "./utils/githubApi.js";
+import { getCommitDetails, getPRDiff, postComment } from "./utils/githubApi.js";
 import { AI_MODEL_PROVIDER } from "./utils/env.js";
 
 import {
@@ -24,8 +19,6 @@ const reviewFunctionsMap = {
 const reviewFunction = reviewFunctionsMap[AI_MODEL_PROVIDER] || null;
 
 async function runReview() {
-  testGitHubApi();
-
   try {
     // PR diff, 커밋 정보 가져오기
     const [diff, commitDetails] = await Promise.all([
