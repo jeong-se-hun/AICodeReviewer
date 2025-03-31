@@ -41,7 +41,5 @@ export function getPrompt({ diff, commitDetails }) {
     prompt += `\n\n### commit info\n\`\`\`\n${commitSection}\n\`\`\``;
   }
 
-  // TODO 제거필요
-  console.log("prompt", prompt, "@@@@@@@@@@");
   return prompt;
 }
