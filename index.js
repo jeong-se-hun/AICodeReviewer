@@ -1,4 +1,4 @@
-import { getPRDiff, postComment } from "./utils/githubApi.js";
+import { getCommitDetails, getPRDiff, postComment } from "./utils/githubApi.js";
 import { AI_MODEL_PROVIDER } from "./utils/env.js";
 
 import {
@@ -20,8 +20,11 @@ const reviewFunction = reviewFunctionsMap[AI_MODEL_PROVIDER] || null;
 
 async function runReview() {
   try {
-    // PR diff 가져오기
-    const diff = await getPRDiff();
+    // PR diff, 커밋 정보 가져오기
+    const [diff, commitDetails] = await Promise.all([
+      getPRDiff(),
+      getCommitDetails(),
+    ]);
 
     // 리뷰 함수 유효성 체크
     if (!reviewFunction) {
@@ -31,7 +34,7 @@ async function runReview() {
     }
 
     // 코드 리뷰 생성
-    const reviewComment = await reviewFunction(diff);
+    const reviewComment = await reviewFunction({ diff, commitDetails });
 
     // GitHub PR에 리뷰 댓글 작성
     await postComment(reviewComment);
