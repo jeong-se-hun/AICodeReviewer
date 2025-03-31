@@ -48,7 +48,7 @@ export async function getCommitDetails() {
 export async function testGitHubApi() {
   const testUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${GITHUB_PR_NUMBER}`;
   const response = await fetchGitHubApi(testUrl);
-  console.log(response.json());
+  console.log(await response.json());
   return;
 }
 
