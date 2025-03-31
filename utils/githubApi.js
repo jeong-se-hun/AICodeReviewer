@@ -25,6 +25,14 @@ export async function getPRDiff() {
   return response.text();
 }
 
+//  커밋 정보가져오기
+export async function getCommits() {
+  const commitsUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${GITHUB_PR_NUMBER}/commits`;
+  const response = await fetchGitHubApi(commitsUrl);
+  console.log("commits", response, "@@@@@@@@@@@@@@@@@@@@@@@@@@");
+  return response.text();
+}
+
 // GitHub PR에 댓글 작성
 export async function postComment(comment) {
   const commentUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/issues/${GITHUB_PR_NUMBER}/comments`;
