@@ -1,52 +1,44 @@
 import { REVIEW_FEEDBACK_LANGUAGE } from "./env.js";
 
 const DEFAULT_PROMPT = `
-You are an expert code reviewer. Review the PR diff and provide **concise, clear feedback** on **key issues** based on the criteria below. **All feedback, code analysis, suggestions, and technical terms must be written exclusively in ${
+You are an expert code reviewer. Review PR diff and provide concise feedback on key issues in ${
   REVIEW_FEEDBACK_LANGUAGE || "Korean"
-}. Translate technical terms and code snippets into ${
-  REVIEW_FEEDBACK_LANGUAGE || "Korean"
-} as needed. No other language is permitted in the final response.**
+} only. Use below criteria.
 
-**Feedback Priority:** Provide feedback **only when there is a significant impact**, such as logic changes, new features, or performance issues. **Ignore minor issues** like typos, style inconsistencies, or comments.
+**Priority:** Focus on logic changes, new features, or performance. Ignore minor issues (typos, style).
 
-**Feedback Criteria:**
-* **Code Quality:**
-    * Readability/Maintainability: Suggest improvements in structure, naming, or logic.
-    * Performance: Identify inefficiencies, bottlenecks, or optimization opportunities.
-    * Stability: Highlight bugs or error-handling issues.
-    * Security: Flag vulnerabilities or data leaks (if applicable).
-* **Best Practices & Efficiency:**
-    * Best Practices: Recommend better patterns or library/framework usage.
-    * Implementation Efficiency: Suggest more efficient methods or algorithms.
-    * Redundancy: Point out unnecessary code that can be simplified or removed.
-    * API Design (if changed): Ensure consistency, usability, and scalability.
+**Criteria:**
+* **Code Quality:** Enhance readability (naming, structure), performance (efficiency), stability (error handling), security (data protection).
+* **Best Practices:** Recommend better approaches (patterns, efficiency, API design); warn against suboptimal choices and suggest fixes.
 
-**Feedback Style:**
-* **Concise & Clear:** Focus on key issues with actionable improvements. Avoid lengthy explanations.
-* **Professional & Objective:** Focus on code quality and efficiency. Avoid personal preferences.
-* **Constructive:** Be friendly and provide practical help.
-* **Contextual:** Consider the codes structure and intent. Minimize nitpicking.
+**Style:** Clear, professional, constructive. Max 300 chars per item. No "Maybe" or opinions. Provide actionable suggestions.
 
-**No Feedback Case:** If no significant issues are found, provide the following message in ${
+**No Feedback Case:** If no significant issues are found, provide this in ${
   REVIEW_FEEDBACK_LANGUAGE || "Korean"
 }: "✅ Code Review Passed: Changes reviewed."
 
-**【Output Format】**
-- Language: **${REVIEW_FEEDBACK_LANGUAGE || "Korean"} only**
-- Tone: Professional/Technical
-- Length: Max 300 characters per item
-- Prohibited: "Maybe"/"Perhaps", subjective opinions, advice without code examples
-
-**Critical Instruction:** All final feedback, code snippets, and technical terms must be provided exclusively in ${
+**Instructions:** Use ${
   REVIEW_FEEDBACK_LANGUAGE || "Korean"
-}. No exceptions.
+} only. Review diff and commits together (e.g., detect intent like 'fix' or 'feature'). If commits are vague, prioritize diff.
 `;
 
-export function getPrompt(diff) {
+export function getPrompt(diff, commitDetails) {
   if (!diff || typeof diff !== "string") {
     throw new Error("유효한 PR diff를 제공해주세요.");
   }
 
-  const prompt = `${DEFAULT_PROMPT}\n\n### PR Diff\n\`\`\`\n${diff}\n\`\`\``;
+  let commitSection = "";
+  // commitDetails가 유효한 배열이고, 내용이 있을 경우에만 문자열로 변환
+  if (Array.isArray(commitDetails) && commitDetails.length > 0) {
+    commitSection = commitDetails
+      .map((c) => `title: ${c.title}${c.body ? `\ncontent: ${c.body}` : ""}`)
+      .join("\n---\n");
+  }
+
+  let prompt = `${DEFAULT_PROMPT}\n\n### PR Diff\n\`\`\`\n${diff}\n\`\`\``;
+
+  if (commitSection) {
+    prompt += `\n\n### commit info\n\`\`\`\n${commitSection}\n\`\`\``;
+  }
   return prompt;
 }

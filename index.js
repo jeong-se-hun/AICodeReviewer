@@ -1,4 +1,4 @@
-import { getCommits, getPRDiff, postComment } from "./utils/githubApi.js";
+import { getCommitDetails, getPRDiff, postComment } from "./utils/githubApi.js";
 import { AI_MODEL_PROVIDER } from "./utils/env.js";
 
 import {
@@ -22,8 +22,8 @@ async function runReview() {
   try {
     // PR diff 가져오기
     const diff = await getPRDiff();
-    const commit = await getCommits();
-    console.log("commitDetails", commit, "@@@@@@@@@@@@@@@@@@@@@@@@@@");
+    // 커밋 정보 가져오기
+    const commitDetails = await getCommitDetails();
 
     // 리뷰 함수 유효성 체크
     if (!reviewFunction) {
@@ -33,7 +33,10 @@ async function runReview() {
     }
 
     // 코드 리뷰 생성
-    const reviewComment = await reviewFunction(diff);
+    const reviewComment = await reviewFunction(diff, commitDetails);
+
+    // TODO 제거필요
+    console.log("reviewComment", reviewComment);
 
     // GitHub PR에 리뷰 댓글 작성
     await postComment(reviewComment);
