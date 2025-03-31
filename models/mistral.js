@@ -5,8 +5,8 @@ import { getPrompt } from "../utils/prompt.js";
 const client = new Mistral({ apiKey: AI_API_KEY });
 
 // Mistral API 호출
-export async function getMistralReview(diff) {
-  const prompt = getPrompt(diff);
+export async function getMistralReview(reviewData) {
+  const prompt = getPrompt(reviewData);
 
   const chatResponse = await client.chat.complete({
     model: AI_MODEL,

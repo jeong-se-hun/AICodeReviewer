@@ -22,7 +22,7 @@ You are an expert code reviewer. Review PR diff and provide concise feedback on 
 } only. Review diff and commits together (e.g., detect intent like 'fix' or 'feature'). If commits are vague, prioritize diff.
 `;
 
-export function getPrompt(diff, commitDetails) {
+export function getPrompt({ diff, commitDetails }) {
   if (!diff || typeof diff !== "string") {
     throw new Error("유효한 PR diff를 제공해주세요.");
   }
@@ -40,5 +40,8 @@ export function getPrompt(diff, commitDetails) {
   if (commitSection) {
     prompt += `\n\n### commit info\n\`\`\`\n${commitSection}\n\`\`\``;
   }
+
+  // TODO 제거필요
+  console.log("prompt", prompt, "@@@@@@@@@@");
   return prompt;
 }

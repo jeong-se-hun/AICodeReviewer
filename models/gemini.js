@@ -6,8 +6,8 @@ const ai = new GoogleGenAI({
   apiKey: AI_API_KEY,
 });
 
-export async function getGeminiReview(diff) {
-  const prompt = getPrompt(diff);
+export async function getGeminiReview(reviewData) {
+  const prompt = getPrompt(reviewData);
 
   // Gemini API 호출
   const review = await ai.models.generateContent({

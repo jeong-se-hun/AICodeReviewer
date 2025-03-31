@@ -33,10 +33,7 @@ async function runReview() {
     }
 
     // 코드 리뷰 생성
-    const reviewComment = await reviewFunction(diff, commitDetails);
-
-    // TODO 제거필요
-    console.log("reviewComment", reviewComment);
+    const reviewComment = await reviewFunction({ diff, commitDetails });
 
     // GitHub PR에 리뷰 댓글 작성
     await postComment(reviewComment);
