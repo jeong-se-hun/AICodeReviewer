@@ -89,6 +89,7 @@ AI 모델의 제공 업체를 변경하려면, `/.github/workflows/ai-code-revie
 - **mistral**
 - **azure**
 - **openai**
+- **openRouter**
 
 > ℹ️ 더 많은 모델을 추가될 예정입니다! 원하는 AI 모델이 있다면 기여 또는 이슈를 등록해 주세요!
 

@@ -6,6 +6,7 @@ import {
   getMistralReview,
   getAzureReview,
   getOpenAiReview,
+  getOpenRouterReview,
 } from "./models/index.js";
 
 // 모델 제공처에 따른 리뷰 함수 매핑
@@ -14,6 +15,7 @@ const reviewFunctionsMap = {
   mistral: getMistralReview,
   azure: getAzureReview,
   openai: getOpenAiReview,
+  openRouter: getOpenRouterReview,
 };
 
 const reviewFunction = reviewFunctionsMap[AI_MODEL_PROVIDER] || null;
