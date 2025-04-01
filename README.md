@@ -94,6 +94,7 @@ To change the AI model provider, modify the `AI_MODEL_PROVIDER` value in the `/.
 - **mistral**
 - **azure**
 - **openai**
+- **openRouter**
 
 > ℹ️ More models will be added soon! If you have a desired AI model, please contribute or create an issue!
 
