@@ -1,5 +1,12 @@
 // GitHub API 관련 함수 (diff 가져오기, 댓글 작성)
-import { GITHUB_TOKEN, GITHUB_PR_NUMBER, GITHUB_REPOSITORY } from "./env.js";
+import {
+  GITHUB_TOKEN,
+  GITHUB_PR_NUMBER,
+  GITHUB_REPOSITORY,
+  GITHUB_EVENT_ACTION,
+  COMMIT_BEFORE,
+  COMMIT_AFTER,
+} from "./env.js";
 
 async function fetchGitHubApi(url, options = {}) {
   const headers = {
@@ -18,10 +25,35 @@ async function fetchGitHubApi(url, options = {}) {
 
 // PR diff 가져오기
 export async function getPRDiff() {
-  const diffUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${GITHUB_PR_NUMBER}`;
-  const response = await fetchGitHubApi(diffUrl, {
-    accept: "application/vnd.github.v3.diff",
-  });
+  let diffUrl, response;
+
+  if (GITHUB_EVENT_ACTION === "opened") {
+    // PR이 열렸을 때의 diff 가져오기
+    console.log("PR이 열렸을 때의 diff 가져오기 @@@@@@@@@@@@"); // TODO 테스트 후 삭제 예정
+    diffUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${GITHUB_PR_NUMBER}`;
+    response = await fetchGitHubApi(diffUrl, {
+      accept: "application/vnd.github.v4.diff",
+    });
+    console.log("PR이 열렸을 때의 diff", response.text(), "@@@@@@@@@@@@@@@@"); // TODO 테스트 후 삭제 예정
+  } else if (
+    GITHUB_EVENT_ACTION === "synchronize" &&
+    COMMIT_BEFORE &&
+    COMMIT_AFTER
+  ) {
+    // PR이 업데이트 됐을 때의 diff 가져오기
+    console.log("PR이 업데이트 됐을 때의 diff 가져오기"); // TODO 테스트 후 삭제 예정
+    diffUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/commits/${COMMIT_AFTER}`;
+    response = await fetchGitHubApi(diffUrl, {
+      accept: "application/vnd.github.v4.diff",
+    });
+    console.log(
+      "PR이 업데이트 됐을 때의 diff",
+      response.text(),
+      "@@@@@@@@@@@@@@@@"
+    ); // TODO 테스트 후 삭제 예정
+  } else {
+    throw new Error("Unsupported GitHub event action");
+  }
 
   return response.text();
 }
@@ -55,4 +87,13 @@ export async function postComment(comment) {
 
   console.log("Review comment posted successfully!");
   return response;
+}
+
+export async function getCommitDiff(commitSha) {
+  const commitUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/commits/${commitSha}`;
+  const response = await fetchGitHubApi(commitUrl, {
+    accept: "application/vnd.github.v3.diff",
+  });
+
+  return response.text();
 }
