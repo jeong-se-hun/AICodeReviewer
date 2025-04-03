@@ -45,17 +45,22 @@ export async function getPRDiff() {
     response = await fetchGitHubApi(diffUrl, {
       accept: "application/vnd.github.v4.diff",
     });
-    const diffUrl2 = `https://api.github.com/repos/${GITHUB_REPOSITORY}/commits/${COMMIT_BEFORE}`;
-    const response2 = await fetchGitHubApi(diffUrl2, {
-      accept: "application/vnd.github.v4.diff",
-    });
-    const diff2 = await response2.text();
-    console.log("diff2", diff2); // TODO 테스트 후 삭제 예정
+    console.log("COMMIT_BEFORE", COMMIT_BEFORE); // TODO 테스트 후 삭제 예정
+    console.log("COMMIT_AFTER", COMMIT_AFTER); // TODO 테스트 후 삭제 예정
+    const 댓글들 = await getComments();
+    console.log("댓글들", 댓글들); // TODO 테스트 후 삭제 예정
   } else {
     throw new Error("Unsupported GitHub event action");
   }
 
   return response.text();
+}
+
+// PR의 모든 댓글 가져오기
+export async function getComments() {
+  const commentsUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/issues/${GITHUB_PR_NUMBER}/comments`;
+  const response = await fetchGitHubApi(commentsUrl);
+  return response.json();
 }
 
 //  커밋 정보가져오기
