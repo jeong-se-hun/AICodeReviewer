@@ -62,7 +62,6 @@ export async function getPRDiff() {
 
 //  커밋 정보가져오기
 export async function getCommitDetails() {
-  console.log("커밋 정보가져오기"); // TODO 테스트 후 삭제 예정
   const commitsUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${GITHUB_PR_NUMBER}/commits`;
   const response = await fetchGitHubApi(commitsUrl);
 
@@ -74,8 +73,12 @@ export async function getCommitDetails() {
     title: commit.commit.message.split("\n")[0], // 커밋 메시지의 첫 줄 (제목)
     body: commit.commit.message.split("\n").slice(1).join("\n").trim(), // 나머지 (내용)
   }));
-  console.log("커밋 정보가져오기 commitDetails", commitDetails, "@@@@@@@@@@@@"); // TODO 테스트 후 삭제 예정
-  return commitDetails;
+
+  if (GITHUB_EVENT_ACTION === "opened") {
+    return commitDetails; // 모든 커밋 반환
+  } else if (GITHUB_EVENT_ACTION === "synchronize") {
+    return [commitDetails[commitDetails.length - 1]]; // 최신 커밋만 반환
+  }
 }
 
 // GitHub PR에 댓글 작성
@@ -90,13 +93,4 @@ export async function postComment(comment) {
 
   console.log("Review comment posted successfully!");
   return response;
-}
-
-export async function getCommitDiff(commitSha) {
-  const commitUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/commits/${commitSha}`;
-  const response = await fetchGitHubApi(commitUrl, {
-    accept: "application/vnd.github.v3.diff",
-  });
-
-  return response.text();
 }
