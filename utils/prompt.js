@@ -22,19 +22,22 @@ You are an expert code reviewer. Review PR diff and provide concise feedback on 
 } only. Review diff and commits together (e.g., detect intent like 'fix' or 'feature'). If commits are vague, prioritize diff.
 `;
 
+function formatCommitDetails(commitDetails) {
+  if (!Array.isArray(commitDetails) || commitDetails.length === 0) {
+    return "";
+  }
+
+  return commitDetails
+    .map((c) => `title: ${c.title}${c.body ? `\ncontent: ${c.body}` : ""}`)
+    .join("\n---\n");
+}
+
 export function getPrompt({ diff, commitDetails }) {
-  if (!diff || typeof diff !== "string") {
-    throw new Error("유효한 PR diff를 제공해주세요.");
+  if (!diff || typeof diff !== "string" || diff.trim().length === 0) {
+    throw new Error("Please provide a valid PR diff.");
   }
 
-  let commitSection = "";
-  // commitDetails가 유효한 배열이고, 내용이 있을 경우에만 문자열로 변환
-  if (Array.isArray(commitDetails) && commitDetails.length > 0) {
-    commitSection = commitDetails
-      .map((c) => `title: ${c.title}${c.body ? `\ncontent: ${c.body}` : ""}`)
-      .join("\n---\n");
-  }
-
+  const commitSection = formatCommitDetails(commitDetails);
   let prompt = `${DEFAULT_PROMPT}\n\n### PR Diff\n\`\`\`\n${diff}\n\`\`\``;
 
   if (commitSection) {
