@@ -34,11 +34,6 @@ export async function getPRDiff() {
     response = await fetchGitHubApi(diffUrl, {
       accept: "application/vnd.github.v4.diff",
     });
-    console.log(
-      "PR이 열렸을 때의 diff",
-      await response.text(),
-      "@@@@@@@@@@@@@@@@"
-    ); // TODO 테스트 후 삭제 예정
   } else if (
     GITHUB_EVENT_ACTION === "synchronize" &&
     COMMIT_BEFORE &&
@@ -50,11 +45,6 @@ export async function getPRDiff() {
     response = await fetchGitHubApi(diffUrl, {
       accept: "application/vnd.github.v4.diff",
     });
-    console.log(
-      "PR이 업데이트 됐을 때의 diff",
-      await response.text(),
-      "@@@@@@@@@@@@@@@@"
-    ); // TODO 테스트 후 삭제 예정
   } else {
     throw new Error("Unsupported GitHub event action");
   }
@@ -64,6 +54,7 @@ export async function getPRDiff() {
 
 //  커밋 정보가져오기
 export async function getCommitDetails() {
+  console.log("커밋 정보가져오기"); // TODO 테스트 후 삭제 예정
   const commitsUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${GITHUB_PR_NUMBER}/commits`;
   const response = await fetchGitHubApi(commitsUrl);
 
@@ -75,7 +66,7 @@ export async function getCommitDetails() {
     title: commit.commit.message.split("\n")[0], // 커밋 메시지의 첫 줄 (제목)
     body: commit.commit.message.split("\n").slice(1).join("\n").trim(), // 나머지 (내용)
   }));
-
+  console.log("커밋 정보가져오기 commitDetails", commitDetails, "@@@@@@@@@@@@"); // TODO 테스트 후 삭제 예정
   return commitDetails;
 }
 
