@@ -25,42 +25,39 @@ async function fetchGitHubApi(url, options = {}) {
 
 // PR diff 가져오기
 export async function getPRDiff() {
-  let response;
-
   if (GITHUB_EVENT_ACTION === "opened") {
     // PR이 열렸을 때의 diff 가져오기
     console.log("PR이 열렸을 때의 diff 가져오기 @@@@@@@@@@@@"); // TODO 테스트 후 삭제 예정
     const diffUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${GITHUB_PR_NUMBER}`;
-    response = await fetchGitHubApi(diffUrl, {
+    const response = await fetchGitHubApi(diffUrl, {
       accept: "application/vnd.github.v4.diff",
     });
-  } else if (
-    GITHUB_EVENT_ACTION === "synchronize" &&
-    COMMIT_BEFORE &&
-    COMMIT_AFTER
-  ) {
-    // PR이 업데이트 됐을 때의 diff 가져오기
-    console.log("PR이 업데이트 됐을 때의 diff 가져오기"); // TODO 테스트 후 삭제 예정
-    const diffUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/commits/${COMMIT_AFTER}`;
-    response = await fetchGitHubApi(diffUrl, {
-      accept: "application/vnd.github.v4.diff",
-    });
-    console.log("COMMIT_BEFORE", COMMIT_BEFORE); // TODO 테스트 후 삭제 예정
-    console.log("COMMIT_AFTER", COMMIT_AFTER); // TODO 테스트 후 삭제 예정
-    const 댓글들 = await getComments();
-    console.log("댓글들", 댓글들); // TODO 테스트 후 삭제 예정
-  } else {
-    throw new Error("Unsupported GitHub event action");
+    return response.text();
   }
 
-  return response.text();
-}
+  if (GITHUB_EVENT_ACTION === "synchronize" && COMMIT_BEFORE && COMMIT_AFTER) {
+    // 커밋이 추가되었을 때 이전과 이후 변경점 비교
+    const beforeCommitUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/commits/${COMMIT_BEFORE}`;
+    const afterCommitUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/commits/${COMMIT_AFTER}`;
 
-// PR의 모든 댓글 가져오기
-export async function getComments() {
-  const commentsUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/issues/${GITHUB_PR_NUMBER}/comments`;
-  const response = await fetchGitHubApi(commentsUrl);
-  return response.json();
+    const [beforeResponse, afterResponse] = await Promise.all([
+      fetchGitHubApi(beforeCommitUrl, {
+        accept: "application/vnd.github.v4.diff",
+      }),
+      fetchGitHubApi(afterCommitUrl, {
+        accept: "application/vnd.github.v4.diff",
+      }),
+    ]);
+
+    const [beforeDiff, afterDiff] = await Promise.all([
+      beforeResponse.text(),
+      afterResponse.text(),
+    ]);
+
+    return `Previous Commit Changes:\n\n${beforeDiff}\n\nLatest Commit Changes:\n\n${afterDiff}`;
+  }
+
+  throw new Error("Unsupported GitHub event action");
 }
 
 //  커밋 정보가져오기
