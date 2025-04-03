@@ -35,8 +35,6 @@ async function runReview() {
       getCommitDetails(),
     ]);
 
-    console.log("@@@@@@@@@****diff*****@@@@@@@@@@@@", diff); // TODO 테스트 후 삭제 예정
-
     // 코드 리뷰 생성
     const reviewComment = await reviewFunction({ diff, commitDetails });
 

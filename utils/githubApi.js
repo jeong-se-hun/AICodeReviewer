@@ -27,7 +27,6 @@ async function fetchGitHubApi(url, options = {}) {
 export async function getPRDiff() {
   if (GITHUB_EVENT_ACTION === "opened") {
     // PR이 열렸을 때의 diff 가져오기
-    console.log("PR이 열렸을 때의 diff 가져오기 @@@@@@@@@@@@"); // TODO 테스트 후 삭제 예정
     const diffUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${GITHUB_PR_NUMBER}`;
     const response = await fetchGitHubApi(diffUrl, {
       accept: "application/vnd.github.v4.diff",
@@ -79,6 +78,8 @@ export async function getCommitDetails() {
   } else if (GITHUB_EVENT_ACTION === "synchronize") {
     return [commitDetails[commitDetails.length - 1]]; // 최신 커밋만 반환
   }
+
+  throw new Error("Unsupported GitHub event action");
 }
 
 // GitHub PR에 댓글 작성
