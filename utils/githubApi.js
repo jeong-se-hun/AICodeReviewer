@@ -25,16 +25,20 @@ async function fetchGitHubApi(url, options = {}) {
 
 // PR diff 가져오기
 export async function getPRDiff() {
-  let diffUrl, response;
+  let response;
 
   if (GITHUB_EVENT_ACTION === "opened") {
     // PR이 열렸을 때의 diff 가져오기
     console.log("PR이 열렸을 때의 diff 가져오기 @@@@@@@@@@@@"); // TODO 테스트 후 삭제 예정
-    diffUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${GITHUB_PR_NUMBER}`;
+    const diffUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${GITHUB_PR_NUMBER}`;
     response = await fetchGitHubApi(diffUrl, {
       accept: "application/vnd.github.v4.diff",
     });
-    console.log("PR이 열렸을 때의 diff", response.text(), "@@@@@@@@@@@@@@@@"); // TODO 테스트 후 삭제 예정
+    console.log(
+      "PR이 열렸을 때의 diff",
+      await response.text(),
+      "@@@@@@@@@@@@@@@@"
+    ); // TODO 테스트 후 삭제 예정
   } else if (
     GITHUB_EVENT_ACTION === "synchronize" &&
     COMMIT_BEFORE &&
@@ -42,13 +46,13 @@ export async function getPRDiff() {
   ) {
     // PR이 업데이트 됐을 때의 diff 가져오기
     console.log("PR이 업데이트 됐을 때의 diff 가져오기"); // TODO 테스트 후 삭제 예정
-    diffUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/commits/${COMMIT_AFTER}`;
+    const diffUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/commits/${COMMIT_AFTER}`;
     response = await fetchGitHubApi(diffUrl, {
       accept: "application/vnd.github.v4.diff",
     });
     console.log(
       "PR이 업데이트 됐을 때의 diff",
-      response.text(),
+      await response.text(),
       "@@@@@@@@@@@@@@@@"
     ); // TODO 테스트 후 삭제 예정
   } else {
