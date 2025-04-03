@@ -41,11 +41,16 @@ export async function getPRDiff() {
   ) {
     // PR이 업데이트 됐을 때의 diff 가져오기
     console.log("PR이 업데이트 됐을 때의 diff 가져오기"); // TODO 테스트 후 삭제 예정
-    // const diffUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/commits/${COMMIT_AFTER}`;
-    const diffUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/commits`;
+    const diffUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/commits/${COMMIT_AFTER}`;
     response = await fetchGitHubApi(diffUrl, {
       accept: "application/vnd.github.v4.diff",
     });
+    const diffUrl2 = `https://api.github.com/repos/${GITHUB_REPOSITORY}/commits/${COMMIT_BEFORE}`;
+    const response2 = await fetchGitHubApi(diffUrl2, {
+      accept: "application/vnd.github.v4.diff",
+    });
+    const diff2 = await response2.text();
+    console.log("diff2", diff2); // TODO 테스트 후 삭제 예정
   } else {
     throw new Error("Unsupported GitHub event action");
   }
