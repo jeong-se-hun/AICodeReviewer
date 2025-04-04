@@ -14,13 +14,7 @@ export async function getOpenAiReview(reviewData) {
 
     const chatResponse = await client.chat.completions.create(
       {
-        messages: [
-          {
-            role: "system",
-            content: "",
-          },
-          { role: "user", content: prompt },
-        ],
+        messages: [{ role: "user", content: prompt }],
         model: AI_MODEL,
       },
       {
