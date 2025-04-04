@@ -1,9 +1,24 @@
 import { Mistral } from "@mistralai/mistralai";
+import { HTTPClient } from "@mistralai/mistralai/lib/http";
 import { AI_API_KEY, AI_MODEL } from "../config/env.js";
 import { getPrompt } from "../utils/prompt.js";
 import { ERROR_MESSAGES, TIMEOUT } from "../config/constants.js";
 
-const client = new Mistral({ apiKey: AI_API_KEY });
+// HTTPClient 인스턴스 생성
+const httpClient = new HTTPClient({
+  fetcher: (request) => fetch(request),
+});
+
+// 요청 전에 실행되는 Hook (타임아웃 설정 및 헤더 추가)
+httpClient.addHook(
+  "beforeRequest",
+  (request) =>
+    new Request(request, {
+      signal: AbortSignal.timeout(1000),
+    })
+);
+
+const client = new Mistral({ apiKey: AI_API_KEY, httpClient });
 
 // Mistral API 호출
 export async function getMistralReview(reviewData) {
