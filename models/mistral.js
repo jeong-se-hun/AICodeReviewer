@@ -1,5 +1,5 @@
 import { Mistral } from "@mistralai/mistralai";
-import { HTTPClient } from "@mistralai/mistralai/lib/http";
+import { HTTPClient } from "@mistralai/mistralai/lib/http.js";
 import { AI_API_KEY, AI_MODEL } from "../config/env.js";
 import { getPrompt } from "../utils/prompt.js";
 import { ERROR_MESSAGES, TIMEOUT } from "../config/constants.js";
