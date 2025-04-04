@@ -14,7 +14,8 @@ async function runReview() {
 
     await postComment(reviewComment);
   } catch (error) {
-    throw error(error);
+    console.error("Review failed:", error.message || error);
+    throw error;
   }
 }
 
