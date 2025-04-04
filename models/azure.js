@@ -19,7 +19,7 @@ export async function getAzureReview(reviewData) {
         model: AI_MODEL,
       },
       {
-        timeout: 100,
+        timeout: TIMEOUT,
       }
     );
 
