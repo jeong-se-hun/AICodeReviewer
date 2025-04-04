@@ -5,6 +5,9 @@ import { ERROR_MESSAGES, TIMEOUT } from "../config/constants.js";
 
 const ai = new GoogleGenAI({
   apiKey: AI_API_KEY,
+  httpOptions: {
+    timeout: 20000,
+  },
 });
 
 export async function getGeminiReview(reviewData) {
@@ -15,11 +18,6 @@ export async function getGeminiReview(reviewData) {
     const review = await ai.models.generateContent({
       model: AI_MODEL,
       contents: prompt,
-      config: {
-        httpOptions: {
-          timeout: 1000000,
-        },
-      },
     });
 
     if (!review || !review.text) {
