@@ -4,17 +4,15 @@ import { AI_API_KEY, AI_MODEL } from "../config/env.js";
 import { getPrompt } from "../utils/prompt.js";
 import { ERROR_MESSAGES, TIMEOUT } from "../config/constants.js";
 
-// HTTPClient 인스턴스 생성
 const httpClient = new HTTPClient({
   fetcher: (request) => fetch(request),
 });
 
-// 요청 전에 실행되는 Hook (타임아웃 설정 및 헤더 추가)
 httpClient.addHook(
   "beforeRequest",
   (request) =>
     new Request(request, {
-      signal: AbortSignal.timeout(100),
+      signal: AbortSignal.timeout(TIMEOUT),
     })
 );
 
