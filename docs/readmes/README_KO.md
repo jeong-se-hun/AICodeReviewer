@@ -57,6 +57,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_PR_NUMBER: ${{ github.event.pull_request.number }}
           GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_EVENT_ACTION: ${{ github.event.action }}
+          COMMIT_BEFORE: ${{ github.event.before }}
+          COMMIT_AFTER: ${{ github.event.after }}
+          # *리드미 확인 후 아래 설정 적용*
           AI_API_KEY: ${{ secrets.AI_API_KEY }}
           AI_MODEL: "사용하실 모델명을 입력해주세요" # 예: "gemini-2.0-pro-exp-02-05"
           AI_MODEL_PROVIDER: "모델 제공 업체를 입력해주세요" # README에서 사용 가능한 AI 서비스 제공 업체를 확인해 주세요
