@@ -21,7 +21,6 @@ const client = new Mistral({ apiKey: AI_API_KEY, httpClient });
 // Mistral API 호출
 export async function getMistralReview(reviewData) {
   try {
-    console.log("mistral api 호출"); // TODO 삭제 예정
     const prompt = getPrompt(reviewData);
 
     const chatResponse = await client.chat.complete(
