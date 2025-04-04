@@ -59,6 +59,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_PR_NUMBER: ${{ github.event.pull_request.number }}
           GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_EVENT_ACTION: ${{ github.event.action }}
+          COMMIT_BEFORE: ${{ github.event.before }}
+          COMMIT_AFTER: ${{ github.event.after }}
+          # *Review the README and apply the following settings*
           AI_API_KEY: ${{ secrets.AI_API_KEY }}
           AI_MODEL: "Enter the model name you wish to use" # Example: "gemini-2.0-pro-exp-02-05"
           AI_MODEL_PROVIDER: "Enter the model provider" # Check the README for available AI service providers
