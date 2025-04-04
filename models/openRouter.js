@@ -19,8 +19,7 @@ export async function getOpenRouterReview(reviewData) {
         model: AI_MODEL,
       },
       {
-        timeout: 1, // 테스트 용
-        // timeout: TIMEOUT,
+        timeout: TIMEOUT,
       }
     );
 

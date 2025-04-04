@@ -14,8 +14,8 @@ async function fetchGitHubApi(url, options = {}) {
     Accept: options.accept || "application/vnd.github+json",
     ...options.headers,
   };
+
   try {
-    console.log(`🔵 GitHub API 호출 시작: ${url}`);
     const response = await fetch(url, { ...options, headers });
     if (!response.ok) {
       const errorText = await response.text();
@@ -29,10 +29,8 @@ async function fetchGitHubApi(url, options = {}) {
       ? response.json()
       : response.text();
   } catch (error) {
-    console.error("❌ GitHub API Error:", error.message);
+    console.error("GitHub API Error:", error.message);
     throw error;
-  } finally {
-    console.log(`🟢 GitHub API 호출 종료: ${url}`);
   }
 }
 
@@ -48,8 +46,6 @@ async function fetchDiff(path) {
 }
 
 export async function getPRDiff() {
-  console.log(`🔵  PR diff 호출 시작`);
-
   if (GITHUB_EVENT_ACTION === "opened") {
     return fetchDiff(`pulls/${GITHUB_PR_NUMBER}`);
   }
@@ -72,8 +68,6 @@ export async function getPRDiff() {
 
 //  커밋 정보가져오기
 export async function getCommitDetails() {
-  console.log(`🔵 커밋 호출 시작`);
-
   const commitsUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${GITHUB_PR_NUMBER}/commits`;
   const commits = await fetchGitHubApi(commitsUrl);
 
