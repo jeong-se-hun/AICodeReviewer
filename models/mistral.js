@@ -1,8 +1,9 @@
 import { Mistral } from "@mistralai/mistralai";
 import { AI_API_KEY, AI_MODEL } from "../config/env.js";
 import { getPrompt } from "../utils/prompt.js";
+import { TIMEOUT } from "../config/constants.js";
 
-const client = new Mistral({ apiKey: AI_API_KEY });
+const client = new Mistral({ apiKey: AI_API_KEY, timeout: TIMEOUT });
 
 // Mistral API 호출
 export async function getMistralReview(reviewData) {
