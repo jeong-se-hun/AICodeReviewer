@@ -17,7 +17,7 @@ export async function getMistralReview(reviewData) {
         messages: [{ role: "user", content: prompt }],
       },
       {
-        timeout: TIMEOUT,
+        timeout: 1,
       }
     );
 
