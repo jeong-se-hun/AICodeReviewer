@@ -6,7 +6,7 @@ import {
   GITHUB_EVENT_ACTION,
   COMMIT_BEFORE,
   COMMIT_AFTER,
-} from "./env.js";
+} from "../config/env.js";
 
 async function fetchGitHubApi(url, options = {}) {
   const headers = {
@@ -15,42 +15,49 @@ async function fetchGitHubApi(url, options = {}) {
     ...options.headers,
   };
 
-  const response = await fetch(url, { ...options, headers });
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`GitHub API request failed: ${errorText}`);
+  try {
+    const response = await fetch(url, { ...options, headers });
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(
+        `GitHub API request failed (${response.status}): ${errorText}`
+      );
+    }
+
+    const contentType = response.headers.get("content-type");
+    return contentType && contentType.includes("application/json")
+      ? response.json()
+      : response.text();
+  } catch (error) {
+    console.error("GitHub API Error:", error.message);
+    throw error;
   }
-  return response;
 }
 
 // PR diff 가져오기
+
+async function fetchDiff(path) {
+  return fetchGitHubApi(
+    `https://api.github.com/repos/${GITHUB_REPOSITORY}/${path}`,
+    {
+      accept: "application/vnd.github.v4.diff",
+    }
+  );
+}
+
 export async function getPRDiff() {
   if (GITHUB_EVENT_ACTION === "opened") {
-    // PR이 열렸을 때의 diff 가져오기
-    const diffUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${GITHUB_PR_NUMBER}`;
-    const response = await fetchGitHubApi(diffUrl, {
-      accept: "application/vnd.github.v4.diff",
-    });
-    return response.text();
+    return fetchDiff(`pulls/${GITHUB_PR_NUMBER}`);
   }
 
-  if (GITHUB_EVENT_ACTION === "synchronize" && COMMIT_BEFORE && COMMIT_AFTER) {
-    // 커밋이 추가되었을 때 이전과 이후 변경점 비교
-    const beforeCommitUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/commits/${COMMIT_BEFORE}`;
-    const afterCommitUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/commits/${COMMIT_AFTER}`;
-
-    const [beforeResponse, afterResponse] = await Promise.all([
-      fetchGitHubApi(beforeCommitUrl, {
-        accept: "application/vnd.github.v4.diff",
-      }),
-      fetchGitHubApi(afterCommitUrl, {
-        accept: "application/vnd.github.v4.diff",
-      }),
-    ]);
+  if (GITHUB_EVENT_ACTION === "synchronize") {
+    if (!COMMIT_BEFORE || !COMMIT_AFTER) {
+      throw new Error("Missing commit references for comparison.");
+    }
 
     const [beforeDiff, afterDiff] = await Promise.all([
-      beforeResponse.text(),
-      afterResponse.text(),
+      fetchDiff(`commits/${COMMIT_BEFORE}`),
+      fetchDiff(`commits/${COMMIT_AFTER}`),
     ]);
 
     return `Previous Commit Changes:\n\n${beforeDiff}\n\nLatest Commit Changes:\n\n${afterDiff}`;
@@ -62,21 +69,22 @@ export async function getPRDiff() {
 //  커밋 정보가져오기
 export async function getCommitDetails() {
   const commitsUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${GITHUB_PR_NUMBER}/commits`;
-  const response = await fetchGitHubApi(commitsUrl);
+  const commits = await fetchGitHubApi(commitsUrl);
 
-  // JSON으로 파싱
-  const commits = await response.json();
+  if (!Array.isArray(commits) || commits.length === 0) {
+    return [];
+  }
 
   // 커밋명과 내용 추출
-  const commitDetails = commits.map((commit) => ({
-    title: commit.commit.message.split("\n")[0], // 커밋 메시지의 첫 줄 (제목)
-    body: commit.commit.message.split("\n").slice(1).join("\n").trim(), // 나머지 (내용)
-  }));
+  const commitDetails = commits.map(({ commit }) => {
+    const [title, ...body] = commit.message.split("\n");
+    return { title: title.trim(), body: body.join("\n").trim() };
+  });
 
   if (GITHUB_EVENT_ACTION === "opened") {
     return commitDetails; // 모든 커밋 반환
   } else if (GITHUB_EVENT_ACTION === "synchronize") {
-    return [commitDetails[commitDetails.length - 1]]; // 최신 커밋만 반환
+    return [commitDetails.at(-1)]; // 최신 커밋만 반환
   }
 
   throw new Error("Unsupported GitHub event action");
@@ -85,13 +93,12 @@ export async function getCommitDetails() {
 // GitHub PR에 댓글 작성
 export async function postComment(comment) {
   const commentUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/issues/${GITHUB_PR_NUMBER}/comments`;
-  const body = { body: comment };
 
   const response = await fetchGitHubApi(commentUrl, {
     method: "POST",
-    body: JSON.stringify(body),
+    body: JSON.stringify({ body: comment }),
   });
 
-  console.log("Review comment posted successfully!");
+  console.log("✅ Review comment posted successfully!");
   return response;
 }
