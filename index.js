@@ -1,47 +1,23 @@
 import { getCommitDetails, getPRDiff, postComment } from "./utils/githubApi.js";
-import { AI_MODEL_PROVIDER } from "./utils/env.js";
-
-import {
-  getGeminiReview,
-  getMistralReview,
-  getAzureReview,
-  getOpenAiReview,
-  getOpenRouterReview,
-} from "./models/index.js";
-
-// 모델 제공처에 따른 리뷰 함수 매핑
-const reviewFunctionsMap = {
-  gemini: getGeminiReview,
-  mistral: getMistralReview,
-  azure: getAzureReview,
-  openai: getOpenAiReview,
-  openRouter: getOpenRouterReview,
-};
-
-const reviewFunction = reviewFunctionsMap[AI_MODEL_PROVIDER] || null;
+import { getReviewFunction } from "./models/reviewFunctions.js";
 
 async function runReview() {
   try {
-    // 리뷰 함수 유효성 체크
-    if (!reviewFunction) {
-      throw new Error(
-        `${AI_MODEL_PROVIDER}는 지원하지 않는 AI_MODEL_PROVIDER입니다.`
-      );
-    }
+    const reviewFunction = getReviewFunction();
 
-    // PR diff, 커밋 정보 가져오기
     const [diff, commitDetails] = await Promise.all([
       getPRDiff(),
       getCommitDetails(),
     ]);
 
-    // 코드 리뷰 생성
     const reviewComment = await reviewFunction({ diff, commitDetails });
 
-    // GitHub PR에 리뷰 댓글 작성
     await postComment(reviewComment);
+
+    process.exit(0); // 정상적으로 완료되면 프로세스 종료
   } catch (error) {
-    console.error("Error during AI review:", error);
+    console.error("Review failed:", error.message || error);
+    process.exit(1); // 오류 발생 시 비정상 종료 코드로 프로세스 종료
   }
 }
 
