@@ -17,7 +17,7 @@ export async function getGeminiReview(reviewData) {
       contents: prompt,
       config: {
         httpOptions: {
-          timeout: 10000,
+          timeout: 1000000,
         },
       },
     });
