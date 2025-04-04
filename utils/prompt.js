@@ -1,4 +1,4 @@
-import { REVIEW_FEEDBACK_LANGUAGE } from "./env.js";
+import { REVIEW_FEEDBACK_LANGUAGE } from "../config/env.js";
 
 const DEFAULT_PROMPT = `
 You are an expert code reviewer. Review PR diff and provide concise feedback on key issues in ${

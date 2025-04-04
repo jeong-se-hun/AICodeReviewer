@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import { AI_API_KEY, AI_MODEL } from "../utils/env.js";
+import { AI_API_KEY, AI_MODEL } from "../config/env.js";
 import { getPrompt } from "../utils/prompt.js";
 
 const client = new OpenAI({

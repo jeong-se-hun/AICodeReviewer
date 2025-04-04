@@ -6,7 +6,7 @@ import {
   GITHUB_EVENT_ACTION,
   COMMIT_BEFORE,
   COMMIT_AFTER,
-} from "./env.js";
+} from "../config/env.js";
 
 async function fetchGitHubApi(url, options = {}) {
   const headers = {
