@@ -14,7 +14,7 @@ httpClient.addHook(
   "beforeRequest",
   (request) =>
     new Request(request, {
-      signal: AbortSignal.timeout(1000),
+      signal: AbortSignal.timeout(100),
     })
 );
 
