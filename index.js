@@ -9,8 +9,7 @@ async function runReview() {
       getPRDiff(),
       getCommitDetails(),
     ]);
-    console.log(`🔵 diff: ${diff}`);
-    console.log(`🔵 commitDetails: ${commitDetails}`);
+
     const reviewComment = await reviewFunction({ diff, commitDetails });
     console.log(`🔵 reviewComment: ${reviewComment}`);
 

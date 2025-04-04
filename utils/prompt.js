@@ -44,5 +44,6 @@ export function getPrompt({ diff, commitDetails }) {
     prompt += `\n\n### commit info\n\`\`\`\n${commitSection}\n\`\`\``;
   }
 
+  console.log(`🔵 prompt: ${prompt}`);
   return prompt;
 }
