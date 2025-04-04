@@ -1,4 +1,4 @@
-export const TIMEOUT = 300 * 1000; // 5분
+export const TIMEOUT = 180 * 1000; // 3분
 
 export const ERROR_MESSAGES = {
   AI_EMPTY_RESPONSE: "⚠️ AI response is empty: Please check the API response",
