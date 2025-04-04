@@ -23,15 +23,10 @@ export async function getMistralReview(reviewData) {
   try {
     const prompt = getPrompt(reviewData);
 
-    const chatResponse = await client.chat.complete(
-      {
-        model: AI_MODEL,
-        messages: [{ role: "user", content: prompt }],
-      },
-      {
-        timeout: 1,
-      }
-    );
+    const chatResponse = await client.chat.complete({
+      model: AI_MODEL,
+      messages: [{ role: "user", content: prompt }],
+    });
 
     if (
       !chatResponse ||
