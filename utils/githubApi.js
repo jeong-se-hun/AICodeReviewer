@@ -48,7 +48,7 @@ async function fetchDiff(path) {
 }
 
 export async function getPRDiff() {
-  console.log(`🔵  PR diff 호출 시작: ${url}`);
+  console.log(`🔵  PR diff 호출 시작`);
 
   if (GITHUB_EVENT_ACTION === "opened") {
     return fetchDiff(`pulls/${GITHUB_PR_NUMBER}`);
@@ -72,7 +72,7 @@ export async function getPRDiff() {
 
 //  커밋 정보가져오기
 export async function getCommitDetails() {
-  console.log(`🔵 커밋 호출 시작: ${url}`);
+  console.log(`🔵 커밋 호출 시작`);
 
   const commitsUrl = `https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${GITHUB_PR_NUMBER}/commits`;
   const commits = await fetchGitHubApi(commitsUrl);
