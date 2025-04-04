@@ -12,10 +12,15 @@ export async function getGeminiReview(reviewData) {
     const prompt = getPrompt(reviewData);
 
     // Gemini API 호출
-    const review = await ai.models.generateContent({
-      model: AI_MODEL,
-      contents: prompt,
-    });
+    const review = await ai.models.generateContent(
+      {
+        model: AI_MODEL,
+        contents: prompt,
+      },
+      {
+        timeout: 100,
+      }
+    );
 
     if (!review || !review.text) {
       throw new Error(ERROR_MESSAGES.AI_EMPTY_RESPONSE);
