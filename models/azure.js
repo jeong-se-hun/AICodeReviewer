@@ -4,7 +4,7 @@ import { getPrompt } from "../utils/prompt.js";
 import { ERROR_MESSAGES, TIMEOUT } from "../config/constants.js";
 
 const client = new OpenAI({
-  baseURL: "https://models.inference.ai.azure.com",
+  baseURL: "https://models.github.ai/inference",
   apiKey: AI_API_KEY,
 });
 
