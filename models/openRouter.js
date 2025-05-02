@@ -29,6 +29,9 @@ export async function getOpenRouterReview(reviewData) {
       chatResponse.choices.length === 0 ||
       !chatResponse.choices[0].message?.content
     ) {
+      console.log(chatResponse);
+      console.log(chatResponse.choices[0]);
+      console.log(chatResponse.choices[0].message?.content);
       throw new Error(ERROR_MESSAGES.AI_EMPTY_RESPONSE);
     }
 
