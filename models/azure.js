@@ -10,6 +10,8 @@ const client = new OpenAI({
 
 // azure API 호출
 export async function getAzureReview(reviewData) {
+  console.log("azure API 호출");
+  console.log(AI_MODEL, "ai model");
   try {
     const prompt = getPrompt(reviewData);
 
@@ -22,6 +24,9 @@ export async function getAzureReview(reviewData) {
         timeout: TIMEOUT,
       }
     );
+    console.log(chatResponse, "chat response");
+    console.log(chatResponse.choices, "chat response");
+    console.log(chatResponse.choices[0].message?.content, "chat response");
 
     if (
       !chatResponse ||
